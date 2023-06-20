@@ -21,7 +21,7 @@ export default function Page() {
             <Image className={styles.image} src="/catalog/small_cubes.png" width={2240} height={950} alt='small_cubes'/>
         </div>
       </div>
-      <List/>
+      <List />
     </>
   );
 }

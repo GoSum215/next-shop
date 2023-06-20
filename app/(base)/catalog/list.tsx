@@ -4,93 +4,47 @@ import Link from 'next/link';
 import styles from './catalog.module.css'
 import Image from 'next/image';
 import Script from 'next/script';
+import {useRef, useEffect, useState} from 'react';
 
 export default function List() {
-    function Filter(){
-        let window = document.getElementById("filter");
-        let arrow = document.getElementById("arrow1");
-        let line = document.getElementById("line");
-        if(window.classList.contains("window_close")){
-            // window.style.display = 'flex';
-            window.classList.add("window_open");
-            window.classList.remove("window_close");
-            arrow.classList.add("arrow_open");
-            line.classList.add("line_loading");
-        }
-        else{
-            // window.style.display = 'none';
-            window.classList.add("window_close");
-            window.classList.remove("window_open");
-            arrow.classList.remove("arrow_open");
-            line.classList.remove("line_loading");
-        }
+    const filter = useRef(null);
+    const sort = useRef(null);
+    const arrow2 = useRef(null);
+    const arrow1 = useRef(null);
+    const Line = useRef(null);
+    const [isFilter, setIsFilter] = useState(false);
+    const [isSort, setIsSort] = useState(false);
+    const [isArrow1, setIsArrow1] = useState(false);
+    const [isArrow2, setIsArrow2] = useState(false);
+
+    const filterWindowClick = () => {
+        setIsFilter(isFilter => !isFilter)
+        setIsArrow1(isArrow1 => !isArrow1)
+        setIsSort(isSort => false)
+        setIsArrow2(isArrow2 => false)
+        //console.log(isSort + " + 1")
     }
-    
-    function Sort(){
-        let window = document.getElementById("sort");
-        let arrow = document.getElementById("arrow2");
-        let line = document.getElementById("line");
-        if(window.classList.contains("window_close")){
-            // window.style.display = 'flex';
-            window.classList.add("window_open");
-            window.classList.remove("window_close");
-            arrow.classList.add("arrow_open");
-            line.classList.add("line_loading");
-        }
-        else{
-            // window.style.display = 'none';
-            window.classList.add("window_close");
-            window.classList.remove("window_open");
-            arrow.classList.remove("arrow_open");
-            line.classList.remove("line_loading");
-        }
+
+    const sortWindowClick = () => {
+        setIsSort(isSort => !isSort)
+        setIsArrow2(isArrow2 => !isArrow2)
+        setIsFilter(isFilter => false)
+        setIsArrow1(isArrow1 => false)
+        //console.log(isSort + " + 1")
     }
-    
-    function clickButton(element){
-        if(element.id === 'filterBTN'){
-            document.getElementById("filter").classList.add("window_close");
-            document.getElementById("filter").classList.remove("window_open");
-            document.getElementById("arrow1").classList.remove("arrow_open");
-        }
-    
-        if(element.id === 'sortBTN'){
-            document.getElementById("sort").classList.add("window_close");
-            document.getElementById("sort").classList.remove("window_open");
-            document.getElementById("arrow2").classList.remove("arrow_open");
-        }
-    }
-    
-    if (typeof window !== 'undefined') {
-        document.addEventListener('click', function(e) {
-            if(e.target.id !== 'filter_m' && e.target.id !=='filterName'&& e.target.id !=='arrow1'&& document.getElementById(e.target.id) !== null && !document.getElementById(e.target.id).closest('#filter')){
-                if (e.target.id !== 'filter') {
-                    document.getElementById('filter').classList.add("window_close");
-                    document.getElementById('filter').classList.remove("window_open");
-                    document.getElementById("arrow1").classList.remove("arrow_open");
-                }
-            }
-            if(e.target.id !== 'sort_m' && e.target.id !== 'sortName' && e.target.id !== 'arrow2' && document.getElementById(e.target.id) !== null && !document.getElementById(e.target.id).closest('#sort')){
-                if (e.target.id !== 'sort') {
-                    document.getElementById('sort').classList.add("window_close");
-                    document.getElementById('sort').classList.remove("window_open");
-                    document.getElementById("arrow2").classList.remove("arrow_open");
-                }
-            }
-        });
-    }
+
   return (
     <>
         <div className={styles.filters}>
-            <div className={styles.filter_mobile} id={styles.filter_m} onClick={Filter}> {/* - - - - */}
+            <div className={styles.filter_mobile} id={styles.filter_m} onClick={filterWindowClick}>
                 <p className={styles.filter_title_mobile} id={styles.filterName}>ФИЛЬТРЫ</p>
-                <div id={styles.arrow1} className={styles.arrow}></div>
-                {/*<img id={styles.arrow1} src="assets/Arrow%201.svg"/>*/}
+                <div id={styles.arrow1} className={isArrow1 ? styles.arrow_open + ' ' + styles.arrow : styles.arrow} ref={arrow1}></div>
             </div>
-            <div className={styles.sort_mobile} id={styles.sort_m} onClick={Sort}>
+            <div className={styles.sort_mobile} id={styles.sort_m} onClick={sortWindowClick}>
                 <p className={styles.filter_title_mobile} id={styles.sortName}>СОРТИРОВКА</p>
-                <div id={styles.arrow2} className={styles.arrow}></div>
+                <div id={styles.arrow2} className={isArrow2 ? styles.arrow_open + ' ' + styles.arrow : styles.arrow} ref={arrow2}></div>
             </div>
-            <div className={styles.filter + ' ' + styles.window_close} id={styles.filter}>
+            <div className={isFilter ? styles.window_open + ' ' + styles.filter : styles.window_close + ' ' + styles.filter} id={styles.filter} ref={filter}> {/* onClick={filterWindowClick} */}
                 <p className={styles.filter_title}>ДЛЯ КОГО?</p>
                 <form method="get" id={styles.filterForm}>
                     <div className={styles.radio_div}>
@@ -109,7 +63,7 @@ export default function List() {
                     </div>
                 </form>
             </div>
-            <div className={styles.sort + ' ' + styles.window_close} id={styles.sort}>
+            <div className={isSort ? styles.window_open + ' ' + styles.sort : styles.window_close + ' ' + styles.sort} id={styles.sort} ref={sort}> {/* onClick={sortWindowClick} */}
                 <p className={styles.filter_title} id={styles.sort_title}>СОРТИРОВКА</p>
                 <form method="get" id={styles.sortForm}>
 
@@ -131,57 +85,57 @@ export default function List() {
 
         <div className={styles.line_parent}>
             {/*<div className={styles.circle"></div>*/}
-            <div className={styles.line} id={styles.line}> {/*line_loading*/}
+            <div className={styles.line} id={styles.line} ref={Line}> {/*line_loading*/}
 
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_1.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 1</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_2.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 2</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_3.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 3</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_4.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 4</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_5.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 5</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_6.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 6</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_7.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 7</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_8.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 8</div>
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/catalog/slug">
                     <div className={styles.card}>
                         <Image src="/catalog/model_9.png" className={styles.img} alt='model' width={1480} height={2000} />
                         <div className={styles.caption}>Наименование товара 9</div>
