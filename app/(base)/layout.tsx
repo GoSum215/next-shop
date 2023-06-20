@@ -19,6 +19,7 @@ export default function RootLayout({children,}: {children: React.ReactNode;}) {
       <html lang="ru" className={roboto.className}>
         <Head>
           <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
           {/* <link rel="stylesheet" href="style.css" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /> */}
         </Head>

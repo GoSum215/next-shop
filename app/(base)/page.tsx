@@ -7,7 +7,11 @@ export default function Page() {
         <>
             <div className={styles.banner}>  {/*style={{backgroundImage: `url("/layout/banner.svg")`}}*/}
                 <div className={styles.bannerContent}>
-                    <p>Каталог-витрина<span className={styles.bannerText1}> специальных коллекций</span><span className={styles.bannerText2}> от Fashion-дизайнеров и брендов</span></p>
+                    <p>
+                        Каталог-витрина
+                        <span className={styles.bannerText1}> специальных коллекций</span>
+                        <span className={styles.bannerText2}> от Fashion-дизайнеров и брендов</span>
+                    </p>
                     <Link className={styles.bannerBtn} href='/catalog'>Перейти к каталогу</Link>
                 </div>
             </div>
